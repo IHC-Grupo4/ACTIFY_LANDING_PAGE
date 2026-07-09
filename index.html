@@ -12,7 +12,8 @@
     <header id="inicio" class="header">
         <!-- menu fijo con sus href para que se guie solo con el click -->
         <nav class="menu">
-            <a class="logo" href="#inicio">Actify</a>
+            <a class="logo" href="#inicio"> Actify</a>
+            <a class="logoimg" href="#inicio"> <img src="img/icono.png" alt="logo"></a>
             <a href="#funciones">Funciones</a>
             <a href="#demo">Demo</a>
             <a href="#enfoque">Enfoque</a>
@@ -25,15 +26,30 @@
                 Actify ayuda a reducir la procrastinación mediante tareas pequeñas,
                 recomendaciones simples y sesiones cortas de concentración.
             </p>
+            <br>
                 <!-- imagen de actify que va en el hero -->
-                <img class="imagen-hero" src="img/heroimagen.png" alt="Actify imagen">
+                <div class="heroimgs">                    
+                    <img src="img/Principal.png" alt="Conversacion IA">
+                    <img src="img/Inicio.png" alt="Inicio Sesion">
+                    <img src="img/Logros.png" alt="logros">                    
+                </div>
 
-            <a class="boton" href="#demo">Probar demo</a>
+            <a class="boton" href="#demo">Probar demo web</a>
         </section>
     </header>
 
     <main>
         <section id="funciones" class="bloque">
+            <!-- video grande para la presentacion del producto -->
+            <section id="video" class="video-bloque">
+                <h2>Conoce Actify en acción</h2>
+
+                <video class="video-actify" controls>
+                    <source src="video/demo.mp4" type="video/mp4">
+                    tu navegador no puede reproducir este video.
+                </video>
+            </section>
+
             <h2>Funciones principales</h2>
 
             <section class="funcion">
@@ -93,7 +109,7 @@
                 <textarea id="bloqueo" rows="4" placeholder="Ejemplo: no sé por dónde empezar"></textarea>
 
                 <button id="pedirAyuda" type="button">Generar recomendación</button>
-                <button id="otraRecomendacion" class="boton-secundario" type="button">Otra idea</button>
+                <button id="otraRecomendacion" class="boton2" type="button">Otra idea</button>
             </form>
 
             <section id="respuestaAsistente" class="resultado">
@@ -139,8 +155,8 @@
                 </select>
 
                 <button id="iniciarEnfoque" type="button">Iniciar</button>
-                <button id="pararEnfoque" class="boton-secundario" type="button">Parar</button>
-                <button id="reiniciarEnfoque" class="boton-secundario" type="button">Reiniciar</button>
+                <button id="pararEnfoque" class="boton2" type="button">Parar</button>
+                <button id="reiniciarEnfoque" class="boton2" type="button">Reiniciar</button>
             </form>
 
             <p id="reloj" class="reloj">01:00</p>
@@ -177,9 +193,10 @@
     </main>
 
     <footer class="footer">
-        <p>Actify - Proyecto de IHC y Tecnologías Móviles</p>
+        <p>Actify - Proyecto de IHC y Tecnologías Móviles - Grupo 4 </p>
     </footer>
 
-    <script src="js/app.js"></script>
+    <script src="code.js"></script>
 </body>
 </html>
+

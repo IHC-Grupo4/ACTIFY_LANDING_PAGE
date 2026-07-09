@@ -1,9 +1,12 @@
 * {
     box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 html {
     scroll-padding-top: 80px;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -20,6 +23,7 @@ body {
     text-align: center;
 }
 
+/* menu que se queda fijo arriba, x eso tiene position fixed */
 .menu {
     position: fixed;
     top: 0;
@@ -34,44 +38,106 @@ body {
     z-index: 10;
 }
 
-
 a {
     color: #0b6b50;
     text-decoration: none;
     font-weight: bold;
 }
 
-
+/* este es el logo en texto que sale a la izquierda del menu */
 .logo {
     margin-right: auto;
     font-size: 24px;
     color: #064b39;
 }
 
+/* este logo con imagen esta oculto en pc, se usa dispositivos con menos pixeles*/
+.logoimg{
+    display: none;
+    margin-bottom: 0px;
+}
+
+/* tamaño de la imagen del logo cuando se llegue a mostrar por eso dice logoimg img 
+"logoimg" es el nombre de la clase y el ultimo img es la etiqueta del html "<img>"*/
+.logoimg img{
+    width: 90px;
+    display: block;
+}
+
+/* bloque principal del hero, para que no ocupe toda la pantalla */
 .hero {
     max-width: 780px;
     margin: 0 auto;
     padding: 40px 20px;
 }
 
+/* titulo grande de la parte principal */
 .hero h1 {
     margin: 0 0 15px 0;
     font-size: 42px;
     color: #064b39;
 }
 
+/* parrafo que esta debajo del titulo */
 .hero p {
     font-size: 18px;
 }
 
-.imagen-hero {
-    display: block;
-    width: 70%;
-    max-width: 420px;
-    margin: 25px auto;
-    border-radius: 10px;
+/* contenedor donde van las 3 imagenes del hero */
+.heroimgs{
+    display: flex;
+    justify-content: center;
+    gap: 75px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    transition: 0.3s;
+}
+    
+/* igual que antes es para las imagenes del hero */
+.heroimgs img{
+    width: 250px;
+    border: 2.5px solid white;
+    border-radius: 5px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    transition: 0.2s;
 }
 
+/* El img:Hover basicamente hace que solo ocurra cuando se pase 
+el mouse por encima , el transform pues transforma la imagen en 
+su misma posicion lo de scale(aqui se indica el tamaño si se pone 
+0.5 se achica obviamente) luego arriba lo del transition lo mismo 
+que su nombre indica una transicion para que no sea brusco el cambio 
+de escala */
+.heroimgs img:hover{
+    transform: scale(1.05);
+}
+
+/* bloque del video, va despues del hero y antes de funciones */
+.video-bloque {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: white;
+    border: 1px solid #d0d5dd;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* titulo del video */
+.video-bloque h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #087a5a;
+}
+
+/* video grande, ocupa casi todo el bloque */
+.video-actify {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+}
+
+/* estos mas q nada son los bloques blancos donde va cada seccion de la pagina */
 .bloque {
     max-width: 850px;
     margin: 30px auto;
@@ -86,6 +152,7 @@ a {
     color: #087a5a;
 }
 
+/* cada tarjetita de funciones principales */
 .funcion {
     margin: 15px 0;
     padding: 15px;
@@ -101,6 +168,7 @@ label {
     font-weight: bold;
 }
 
+/* estilo para los campos q el usuario escribe o elige opciones */
 input,
 select,
 textarea {
@@ -112,6 +180,8 @@ textarea {
     font-family: "Trebuchet MS", Arial, sans-serif;
 }
 
+/* botones normales y tambien el boton que es un link,
+osea el que tiene el href (link) */
 button,
 .boton {
     display: inline-block;
@@ -127,11 +197,14 @@ button,
     font-family: "Trebuchet MS", Arial, sans-serif;
 }
 
-.boton-secundario {
+/* boton secundario, x eso es blanco y no verde completo 
+para dar un estilo diferente */
+.boton2 {
     background-color: white;
     color: #0a9b71;
 }
 
+/* cajas donde salen mensajes o resultados del java */
 .mensaje,
 .resultado {
     margin-top: 15px;
@@ -144,6 +217,7 @@ button,
     margin-top: 15px;
 }
 
+/* estilo de cada check de la parte de microaccion */
 .check {
     margin-top: 10px;
     padding: 10px;
@@ -157,6 +231,7 @@ button,
     margin-right: 8px;
 }
 
+/* estilo del reloj de la sesion de enfoque */
 .reloj {
     margin: 20px 0;
     padding: 20px;
@@ -173,4 +248,40 @@ button,
     background-color: #0b6b50;
     color: white;
     text-align: center;
+}
+
+/* esta parte es para cuando se use la 
+pagina web en celulares o tablets, x 
+eso pone cuando es un max-width de 
+720px */
+
+@media (max-width:720px){
+
+/* en celular las imagenes ya no van en fila, sino una debajo de otra */
+.heroimgs{
+    gap: 30px;  
+    flex-direction: column;
+    align-items: center;
+}
+
+/* en celular se quita el efecto de agrandar xq puede verse raro */
+.heroimgs img:hover{
+    transform: none;
+}
+
+/* se oculta el logo en texto para que no ocupe mucho espacio */
+.logo {
+    display: none;
+}
+
+/* aca recien se muestra el logo como imagen */
+.logoimg{
+    display: block;
+}
+
+/* se ajusta el menu para que se vea mas centrado en pantallas chicas */
+.menu{
+    padding: 0px 30px;
+    justify-content: center;
+}
 }
