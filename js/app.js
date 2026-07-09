@@ -1,231 +1,184 @@
-// Tarea
-const nombreTarea = document.getElementById('nombreTarea');
-const fechaTarea = document.getElementById('fechaTarea');
-const resumenTarea = document.getElementById('resumenTarea');
-const mensajeTarea = document.getElementById('mensajeTarea');
-const tareasCompletadas = document.getElementById('tareasCompletadas');
+var tarea = '';
+var segundos = 60;
+var intervalo = null;
 
-let tareaGuardada = localStorage.getItem('actifyTarea') || '';
-let tareaCompletada = localStorage.getItem('tareaCompletada') === 'si';
+// funciones cortas para no repetir tanto codigo
+function escribir(id, texto) {
+    document.getElementById(id).textContent = texto;
+}
 
-document.getElementById('guardarTarea').addEventListener('click', function () {
-    if (nombreTarea.value.trim() === '') {
-        mensajeTarea.textContent = 'Escribe el nombre de la tarea.';
+function obtenerValor(id) {
+    return document.getElementById(id).value;
+}
+
+// aca se guarda la tarea principal para luego segun sae llene, mandar un mensaje diferente
+document.getElementById('guardarTarea').onclick = function () {
+    var nombre = obtenerValor('nombreTarea').trim();
+    var prioridad = obtenerValor('prioridad');
+    var energia = obtenerValor('energia');
+    var tiempo = obtenerValor('tiempo');
+
+    if (nombre === '') {
+        escribir('mensajeTarea', 'Escribe el nombre de la tarea para guardarla.');
+    } else {
+        tarea = nombre;
+        escribir('mensajeTarea', 'Tarea guardada: ' + tarea + '. Prioridad: ' + prioridad + '. Energía: ' + energia + '. Tiempo: ' + tiempo + ' minutos.');
+        escribir('tareasGuardadas', '1');
+        escribir('mensajeMotivacion', 'Buen inicio. Ahora puedes pedir una recomendación o generar microacciones.');
+    }
+};
+
+document.getElementById('pedirAyuda').onclick = function () {
+    var energia = obtenerValor('energia');
+    var tiempo = obtenerValor('tiempo');
+    var bloqueo = obtenerValor('bloqueo').trim();
+    var texto = '';
+
+    if (tarea === '') {
+        escribir('respuestaAsistente', 'Primero guarda una tarea en la demo.');
         return;
     }
 
-    const prioridad = document.querySelector('input[name="prioridad"]:checked').value;
-    tareaGuardada = nombreTarea.value.trim();
-    tareaCompletada = false;
+    if (energia === 'baja') {
+        texto = 'Empieza con algo muy pequeño: abre el material de "' + tarea + '" y trabaja solo ' + tiempo + ' minutos.';
+    } else if (energia === 'media') {
+        texto = 'Divide "' + tarea + '" en tres pasos y completa el primero durante ' + tiempo + ' minutos.';
+    } else {
+        texto = 'Aprovecha tu energía alta y avanza la parte más importante de "' + tarea + '" durante ' + tiempo + ' minutos.';
+    }
+    if (bloqueo !== '') {
+        texto = texto + ' Recuerda que tu bloqueo principal es: ' + bloqueo + '.';
+    }
+    escribir('respuestaAsistente', texto);
+};
 
-    localStorage.setItem('actifyTarea', tareaGuardada);
-    localStorage.setItem('fechaTarea', fechaTarea.value);
-    localStorage.setItem('prioridadTarea', prioridad);
-    localStorage.setItem('tareaCompletada', 'no');
+document.getElementById('otraRecomendacion').onclick = function () {
+    if (tarea === '') {
+        escribir('respuestaAsistente', 'Primero guarda una tarea.');
+    } else {
+        escribir('respuestaAsistente', 'Otra idea: prepara tu espacio, abre solo lo necesario y escribe la primera línea de "' + tarea + '".');
+    }
+};
 
-    resumenTarea.textContent = tareaGuardada + ' - Prioridad ' + prioridad;
-    mensajeTarea.textContent = 'Tarea guardada correctamente.';
-    actualizarEstadisticas();
-});
-
-document.getElementById('completarTarea').addEventListener('click', function () {
-    if (tareaGuardada === '') {
-        mensajeTarea.textContent = 'Primero guarda una tarea.';
+// generar pasos pre guardados para q no se vea vacio
+document.getElementById('generarPasos').onclick = function () {
+    if (tarea === '') {
+        escribir('mensajeProgreso', 'Primero guarda una tarea para generar microacciones.');
         return;
     }
 
-    tareaCompletada = true;
-    localStorage.setItem('tareaCompletada', 'si');
-    mensajeTarea.textContent = 'Tarea completada. Buen trabajo.';
-    actualizarEstadisticas();
-});
+    escribir('paso1', 'Abrir los materiales de ' + tarea);
+    escribir('paso2', 'Trabajar cinco minutos en la primera parte');
+    escribir('paso3', 'Guardar el avance y anotar qué sigue');
 
-// Asistente
-const respuestaAsistente = document.getElementById('respuestaAsistente');
+    document.getElementById('checkPaso1').checked = false;
+    document.getElementById('checkPaso2').checked = false;
+    document.getElementById('checkPaso3').checked = false;
 
-document.getElementById('pedirAyuda').addEventListener('click', function () {
-    if (tareaGuardada === '') {
-        respuestaAsistente.textContent = 'Primero registra una tarea.';
-        return;
-    }
+    actualizarProgreso();
+};
 
-    const energia = document.querySelector('input[name="energia"]:checked').value;
-    const tiempoDisponible = document.getElementById('tiempoDisponible').value;
-    const bloqueo = document.getElementById('bloqueo').value.trim();
-
-    respuestaAsistente.textContent = 'Para comenzar "' + tareaGuardada + '", trabaja durante ' + tiempoDisponible +
-        ' minutos en un paso pequeño. Tu energía es ' + energia +
-        (bloqueo ? ' y tendremos en cuenta que ' + bloqueo + '.' : '.');
-});
-
-document.getElementById('otraRecomendacion').addEventListener('click', function () {
-    respuestaAsistente.textContent = tareaGuardada === ''
-        ? 'Primero registra una tarea.'
-        : 'Otra opción es preparar únicamente los materiales de "' + tareaGuardada + '".';
-});
-
-document.getElementById('aceptarRecomendacion').addEventListener('click', function () {
-    respuestaAsistente.textContent = tareaGuardada === ''
-        ? 'Primero registra una tarea.'
-        : 'Recomendación aceptada. Ahora puedes generar tus microacciones.';
-});
-
-// Microacciones
-const paso1 = document.getElementById('paso1');
-const paso2 = document.getElementById('paso2');
-const paso3 = document.getElementById('paso3');
-const paso1Completado = document.getElementById('paso1Completado');
-const paso2Completado = document.getElementById('paso2Completado');
-const paso3Completado = document.getElementById('paso3Completado');
-const barraProgreso = document.getElementById('barraProgreso');
-const textoProgreso = document.getElementById('textoProgreso');
-const pasosCompletados = document.getElementById('pasosCompletados');
-
-document.getElementById('generarPasos').addEventListener('click', function () {
-    if (tareaGuardada === '') {
-        textoProgreso.textContent = 'Primero registra una tarea.';
-        return;
-    }
-
-    paso1.value = 'Abrir los materiales de ' + tareaGuardada;
-    paso2.value = 'Trabajar cinco minutos en la primera parte';
-    paso3.value = 'Guardar el avance y anotar el siguiente paso';
-    textoProgreso.textContent = 'Microacciones generadas. Puedes editarlas directamente.';
-});
-
-paso1Completado.addEventListener('change', actualizarProgreso);
-paso2Completado.addEventListener('change', actualizarProgreso);
-paso3Completado.addEventListener('change', actualizarProgreso);
+document.getElementById('checkPaso1').onclick = actualizarProgreso;
+document.getElementById('checkPaso2').onclick = actualizarProgreso;
+document.getElementById('checkPaso3').onclick = actualizarProgreso;
 
 function actualizarProgreso() {
-    let completados = 0;
+    var completados = 0;
 
-    if (paso1Completado.checked) completados++;
-    if (paso2Completado.checked) completados++;
-    if (paso3Completado.checked) completados++;
-
-    barraProgreso.value = completados;
-    textoProgreso.textContent = completados + ' de 3 microacciones completadas.';
-
-    if (completados === 3) {
-        textoProgreso.textContent = '3 de 3 microacciones completadas. Terminaste tu plan.';
+    if (document.getElementById('checkPaso1').checked) {
+        completados = completados + 1;
     }
 
-    localStorage.setItem('pasosCompletados', completados);
-    actualizarEstadisticas();
+    if (document.getElementById('checkPaso2').checked) {
+        completados = completados + 1;
+    }
+
+    if (document.getElementById('checkPaso3').checked) {
+        completados = completados + 1;
+    }
+
+    escribir('pasosHechos', completados);
+    escribir('mensajeProgreso', completados + ' de 3 microacciones completadas.');
+
+    if (completados > 0) {
+        escribir('mensajeMotivacion', 'Ya avanzaste. Continúa con el siguiente paso pequeño.');
+    }
 }
 
-// Temporizador
-const duracionEnfoque = document.getElementById('duracionEnfoque');
-const temporizador = document.getElementById('temporizador');
-const mensajeEnfoque = document.getElementById('mensajeEnfoque');
-const minutosEnfoque = document.getElementById('minutosEnfoque');
-
-let segundosRestantes = 60;
-let intervaloTemporizador = null;
-let minutosGuardados = Number(localStorage.getItem('minutosEnfoque')) || 0;
-
-duracionEnfoque.addEventListener('change', reiniciarTemporizador);
-
-document.getElementById('iniciarEnfoque').addEventListener('click', function () {
-    if (intervaloTemporizador !== null) return;
-
-    mensajeEnfoque.textContent = 'Sesión iniciada.';
-    intervaloTemporizador = setInterval(function () {
-        segundosRestantes--;
-        mostrarTiempo();
-
-        if (segundosRestantes <= 0) {
-            finalizarSesion('Sesión completada. Toma un descanso.');
+// parte del reloj
+document.getElementById('duracion').onchange = function () {
+    reiniciarReloj();
+};
+document.getElementById('iniciarEnfoque').onclick = function () {
+    if (intervalo !== null) {
+        return;
+    }
+    if (segundos <= 0) {
+        reiniciarReloj();
+    }
+    escribir('mensajeEnfoque', 'Sesión iniciada. Concéntrate en una sola tarea.');
+    intervalo = setInterval(function () {
+        segundos = segundos - 1;
+        mostrarReloj();
+        if (segundos <= 0) {
+            clearInterval(intervalo);
+            intervalo = null;
+            segundos = 0;
+            mostrarReloj();
+            escribir('mensajeEnfoque', 'Sesión terminada. Buen trabajo.');
         }
     }, 1000);
-});
+};
 
-document.getElementById('pausarEnfoque').addEventListener('click', function () {
-    clearInterval(intervaloTemporizador);
-    intervaloTemporizador = null;
-    mensajeEnfoque.textContent = 'Sesión pausada.';
-});
+document.getElementById('pararEnfoque').onclick = function () {
+    if (intervalo !== null) {
+        clearInterval(intervalo);
+        intervalo = null;
+        escribir('mensajeEnfoque', 'Sesión pausada puedes seguir cuando quieras.');
+    } else {
+        escribir('mensajeEnfoque', 'El reloj ya esta parado.');
+    }
+};
 
-document.getElementById('finalizarEnfoque').addEventListener('click', function () {
-    finalizarSesion('Sesión finalizada y registrada.');
-});
+document.getElementById('reiniciarEnfoque').onclick = function () {
+    reiniciarReloj();
+    escribir('mensajeEnfoque', 'Sesión reiniciada.');
+};
 
-function finalizarSesion(mensaje) {
-    clearInterval(intervaloTemporizador);
-    intervaloTemporizador = null;
-    minutosGuardados += Number(duracionEnfoque.value);
-    localStorage.setItem('minutosEnfoque', minutosGuardados);
-    mensajeEnfoque.textContent = mensaje;
-    reiniciarTemporizador();
-    actualizarEstadisticas();
+function reiniciarReloj() {
+    clearInterval(intervalo);
+    intervalo = null;
+    segundos = Number(obtenerValor('duracion')) * 60;
+    mostrarReloj();
 }
 
-function reiniciarTemporizador() {
-    clearInterval(intervaloTemporizador);
-    intervaloTemporizador = null;
-    segundosRestantes = Number(duracionEnfoque.value) * 60;
-    mostrarTiempo();
-}
+function mostrarReloj() {
+    var minutos = Math.floor(segundos / 60);
+    var segundosMostrar = segundos % 60;
 
-function mostrarTiempo() {
-    const minutos = Math.floor(segundosRestantes / 60);
-    const segundos = segundosRestantes % 60;
-    temporizador.textContent = String(minutos).padStart(2, '0') + ':' + String(segundos).padStart(2, '0');
-}
-
-// Notificaciones
-const mensajePreferencias = document.getElementById('mensajePreferencias');
-
-document.getElementById('guardarPreferencias').addEventListener('click', function () {
-    const estado = document.getElementById('notificacionesActivas').checked ? 'activadas' : 'desactivadas';
-    const hora = document.getElementById('horaNotificacion').value;
-    const frecuencia = document.querySelector('input[name="frecuencia"]:checked').value;
-
-    localStorage.setItem('notificacionesActivas', estado);
-    localStorage.setItem('horaNotificacion', hora);
-    localStorage.setItem('frecuenciaNotificacion', frecuencia);
-
-    mensajePreferencias.textContent = 'Preferencias guardadas: ' + estado + ', ' + frecuencia.toLowerCase() + ' a las ' + hora + '.';
-});
-
-// Recuperación de contraseña
-const mensajeRecuperacion = document.getElementById('mensajeRecuperacion');
-
-document.getElementById('recuperarContrasena').addEventListener('click', function () {
-    const correo = document.getElementById('correoRecuperacion').value.trim();
-
-    mensajeRecuperacion.textContent = correo === ''
-        ? 'Ingresa tu correo electrónico.'
-        : 'Se enviaron instrucciones de recuperación a ' + correo + '.';
-});
-
-// Datos guardados en el navegador
-function cargarDatos() {
-    if (tareaGuardada !== '') {
-        nombreTarea.value = tareaGuardada;
-        fechaTarea.value = localStorage.getItem('fechaTarea') || '';
-        resumenTarea.textContent = tareaGuardada + ' - Prioridad ' + (localStorage.getItem('prioridadTarea') || 'Media');
+    if (minutos < 10) {
+        minutos = '0' + minutos;
     }
 
-    actualizarEstadisticas();
-    reiniciarTemporizador();
+    if (segundosMostrar < 10) {
+        segundosMostrar = '0' + segundosMostrar;
+    }
+
+    escribir('reloj', minutos + ':' + segundosMostrar);
 }
 
-function actualizarEstadisticas() {
-    let completados = 0;
+// mensaje del contacto segun se llenen los campos
 
-    if (paso1Completado.checked) completados++;
-    if (paso2Completado.checked) completados++;
-    if (paso3Completado.checked) completados++;
+document.getElementById('enviarContacto').onclick = function () {
+    var nombre = obtenerValor('nombreContacto').trim();
+    var correo = obtenerValor('correoContacto').trim();
+    var mensaje = obtenerValor('mensajeContactoTexto').trim();
 
-    tareasCompletadas.textContent = tareaCompletada ? '1' : '0';
-    pasosCompletados.textContent = completados;
-    minutosEnfoque.textContent = minutosGuardados;
+    if (nombre === '' || correo === '' || mensaje === '') {
+        escribir('mensajeContacto', 'Completa todos los campos requeridos.');
+    } else {
+        escribir('mensajeContacto', 'Gracias, ' + nombre + ' tu mensaje fue registrado.');
+    }
+};
 
-    document.getElementById('mensajeMotivacion').textContent = tareaCompletada || completados > 0
-        ? 'Ya avanzaste. Continúa con el siguiente paso pequeño.'
-        : 'Cada pequeño avance cuenta.';
-}
-
-cargarDatos();
+mostrarReloj();

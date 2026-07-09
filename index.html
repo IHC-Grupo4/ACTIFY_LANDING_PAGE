@@ -3,196 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actify | Da el primer paso</title>
-    <link rel="stylesheet" href="css/styles.css?v=3">
+    <title>Actify </title>
+    <!-- para el logo de arriba que aparece en el navegador -->
+    <link rel="icon" href="img/icono.png" type="image/png">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <header id="inicio" class="header">
+        <!-- menu fijo con sus href para que se guie solo con el click -->
+        <nav class="menu">
+            <a class="logo" href="#inicio">Actify</a>
+            <a href="#funciones">Funciones</a>
+            <a href="#demo">Demo</a>
+            <a href="#enfoque">Enfoque</a>
+            <a href="#contacto">Contacto</a> 
+        </nav>
 
-    <p class="menu">
-        <a class="logo" href="#inicio">Actify</a>
-        <a href="#inicio">Inicio</a>
-        <a href="#funciones">Funciones</a>
-        <a class="enlace-actify" href="#asistente">Hablar con Actify</a>
-        <a href="#contacto">Contacto</a>
-    </p>
+        <section class="hero">
+            <h1>Da el primer paso con Actify</h1>
+            <p>
+                Actify ayuda a reducir la procrastinación mediante tareas pequeñas,
+                recomendaciones simples y sesiones cortas de concentración.
+            </p>
+                <!-- imagen de actify que va en el hero -->
+                <img class="imagen-hero" src="img/heroimagen.png" alt="Actify imagen">
 
-    <h1 id="inicio" class="titulo-principal">Da el primer paso con Actify</h1>
-    <p class="texto-principal">
-        Actify te ayuda a reducir la procrastinación con orientación sencilla,
-        microacciones y sesiones de enfoque.
-    </p>
-    <p class="botones-principales">
-        <a class="boton" href="#asistente">Hablar con Actify</a>
-        <a class="boton boton-claro" href="#tarea">Probar la demostración</a>
-    </p>
+            <a class="boton" href="#demo">Probar demo</a>
+        </section>
+    </header>
 
-    <hr>
+    <main>
+        <section id="funciones" class="bloque">
+            <h2>Funciones principales</h2>
 
-    <h2 id="funciones">Funciones principales</h2>
+            <section class="funcion">
+                <h3>Asistente conversacional</h3>
+                <p>Entrega una sugerencia según tu energía, tu tiempo y la tarea pendiente.</p>
+            </section>
 
-    <h3>Asistente conversacional</h3>
-    <p>Brinda una recomendación según la tarea, la energía y el tiempo disponible.</p>
+            <section class="funcion">
+                <h3>Microacciones</h3>
+                <p>Convierte una tarea grande en pasos pequeños para empezar sin tanta presión.</p>
+            </section>
 
-    <h3>Microacciones</h3>
-    <p>Divide una actividad grande en pasos pequeños y fáciles de comenzar.</p>
+            <section class="funcion">
+                <h3>Enfoque y progreso</h3>
+                <p>Permite iniciar una sesión breve de concentración y ver tu avance.</p>
+            </section>
+        </section>
 
-    <h3>Enfoque y progreso</h3>
-    <p>Permite iniciar un temporizador y observar el avance realizado.</p>
+        <section id="demo" class="bloque">
+            <h2>Registrar una tarea</h2>
 
-    <hr>
+            <!-- este form es para lo de registrar las tareas -->
+            <form id="formTarea">
+                <label for="nombreTarea">Nombre de la tarea</label>
+                <input id="nombreTarea" type="text" placeholder="Ejemplo: terminar el informe">
 
-    <form id="tarea" class="bloque">
-        <h2>Registrar una tarea</h2>
+                <label for="prioridad">Prioridad</label>
+                <select id="prioridad">
+                    <option value="Alta">Alta</option>
+                    <option value="Media" selected>Media</option>
+                    <option value="Baja">Baja</option>
+                </select>
+                <label for="energia">Nivel de energía</label>
+                <select id="energia">
+                    <option value="baja">Baja</option>
+                    <option value="media" selected>Media</option>
+                    <option value="alta">Alta</option>
+                </select>
+                <label for="tiempo">Tiempo disponible</label>
+                <select id="tiempo">
+                    <option value="5">5 minutos</option>
+                    <option value="10">10 minutos</option>
+                    <option value="15">15 minutos</option>
+                    <option value="25">25 minutos</option>
+                </select>
+                <button id="guardarTarea" type="button">Guardar tarea</button>
+            </form>
+            
+            <p id="mensajeTarea" class="mensaje">Todavía no has guardado una tarea.</p>
+        </section>
 
-        <label for="nombreTarea">Nombre de la tarea</label>
-        <input id="nombreTarea" type="text" placeholder="Ejemplo: terminar el informe">
+        <section id="asistente" class="bloque">
+            <h2>Recomendación de Actify</h2>
 
-        <label for="fechaTarea">Fecha límite</label>
-        <input id="fechaTarea" type="date">
+            <form id="formAsistente">
+                <label for="bloqueo">¿Qué te impide comenzar?</label>
+                <textarea id="bloqueo" rows="4" placeholder="Ejemplo: no sé por dónde empezar"></textarea>
 
-        <p>Prioridad</p>
-        <label><input type="radio" name="prioridad" value="Alta"> Alta</label>
-        <label><input type="radio" name="prioridad" value="Media" checked> Media</label>
-        <label><input type="radio" name="prioridad" value="Baja"> Baja</label>
+                <button id="pedirAyuda" type="button">Generar recomendación</button>
+                <button id="otraRecomendacion" class="boton-secundario" type="button">Otra idea</button>
+            </form>
 
-        <p>
-            <button class="boton" id="guardarTarea" type="button">Guardar tarea</button>
-            <button class="boton boton-claro" id="completarTarea" type="button">Completar tarea</button>
-        </p>
+            <section id="respuestaAsistente" class="resultado">
+                Actify está listo para ayudarte cuando guardes una tarea.
+            </section>
+        </section>
 
-        <p id="resumenTarea">Todavía no se ha guardado una tarea.</p>
-        <p class="mensaje" id="mensajeTarea"></p>
-    </form>
+        <section id="microacciones" class="bloque">
+            <h2>Microacciones</h2>
+            <p>Genera tres pasos sencillos para empezar tu tarea.</p>
 
-    <hr>
+            <!-- generar los pasos con el java, por eso las ids -->
+            <button id="generarPasos" type="button">Generar pasos</button>
+            <section class="lista-pasos">
+                <label class="check">
+                    <input id="checkPaso1" type="checkbox">
+                    <span id="paso1">Paso 1 pendiente</span>
+                </label>
+                <label class="check">
+                    <input id="checkPaso2" type="checkbox">
+                    <span id="paso2">Paso 2 pendiente</span>
+                </label>
+                <label class="check">
+                    <input id="checkPaso3" type="checkbox">
+                    <span id="paso3">Paso 3 pendiente</span>
+                </label>
+            </section>
 
-    <form id="asistente" class="bloque">
-        <h2>Hablar con Actify</h2>
+            <p id="mensajeProgreso" class="mensaje">0 de 3 microacciones completadas.</p>
+        </section>
 
-        <label for="bloqueo">¿Qué te impide comenzar?</label>
-        <input id="bloqueo" type="text" placeholder="Ejemplo: no sé por dónde empezar">
+        <section id="enfoque" class="bloque">
+            <h2>Sesión de enfoque</h2>
 
-        <p>Nivel de energía</p>
-        <label><input type="radio" name="energia" value="baja"> Baja</label>
-        <label><input type="radio" name="energia" value="media" checked> Media</label>
-        <label><input type="radio" name="energia" value="alta"> Alta</label>
+            <!-- options para el reloj -->
+            <form id="formEnfoque">
+                <label for="duracion">Duración</label>
+                <select id="duracion">
+                    <option value="1" selected>1 minuto</option>
+                    <option value="5">5 minutos</option>
+                    <option value="10">10 minutos</option>
+                    <option value="25">25 minutos</option>
+                </select>
 
-        <label for="tiempoDisponible">Tiempo disponible en minutos</label>
-        <input id="tiempoDisponible" type="number" min="1" max="60" value="5">
+                <button id="iniciarEnfoque" type="button">Iniciar</button>
+                <button id="pararEnfoque" class="boton-secundario" type="button">Parar</button>
+                <button id="reiniciarEnfoque" class="boton-secundario" type="button">Reiniciar</button>
+            </form>
 
-        <label for="detalles">Cuéntanos un poco más</label>
-        <textarea id="detalles" rows="4" placeholder="Escribe qué te preocupa"></textarea>
+            <p id="reloj" class="reloj">01:00</p>
+            <p id="mensajeEnfoque" class="mensaje">Elige una duración e inicia tu sesión.</p>
+        </section>
 
-        <p>
-            <button class="boton" id="pedirAyuda" type="button">Pedir ayuda</button>
-            <button class="boton boton-claro" id="otraRecomendacion" type="button">Otra recomendación</button>
-            <button class="boton boton-claro" id="aceptarRecomendacion" type="button">Aceptar</button>
-        </p>
+        <section id="progreso" class="bloque">
+            <h2>Tu progreso</h2>
+            <p>Tareas guardadas: <strong id="tareasGuardadas">0</strong></p>
+            <p>Microacciones completadas: <strong id="pasosHechos">0</strong></p>
+            <p id="mensajeMotivacion" class="mensaje">Cada pequeño avance cuenta.</p>
+        </section>
 
-        <p class="respuesta" id="respuestaAsistente">Actify está listo para ayudarte.</p>
-    </form>
+        <section id="contacto" class="bloque">
+            <h2>Contacto</h2>
+            <p>Escríbenos para conocer más sobre Actify.</p>
 
-    <hr>
+            <form id="formContacto">
+                <label for="nombreContacto">Nombre</label>
+                <input id="nombreContacto" type="text" placeholder="Tu nombre">
 
-    <form id="microacciones" class="bloque">
-        <h2>Microacciones</h2>
+                <label for="correoContacto">Correo</label>
+                <input id="correoContacto" type="email" placeholder="nombre@correo.com">
 
-        <button class="boton" id="generarPasos" type="button">Generar pasos</button>
+                <label for="mensajeContactoTexto">Mensaje</label>
+                <textarea id="mensajeContactoTexto" rows="4" placeholder="Escribe tu mensaje"></textarea>
 
-        <p>
-            <input id="paso1Completado" type="checkbox">
-            <label for="paso1">Paso 1</label>
-            <input id="paso1" type="text" placeholder="Primer paso">
-        </p>
+                <button id="enviarContacto" type="button">Enviar</button>
+            </form>
 
-        <p>
-            <input id="paso2Completado" type="checkbox">
-            <label for="paso2">Paso 2</label>
-            <input id="paso2" type="text" placeholder="Segundo paso">
-        </p>
+            <!-- esto es para el mensaje que saldra luego de registrar o no registrar los datos -->
+            <p id="mensajeContacto" class="mensaje"></p>
+        </section>
+    </main>
 
-        <p>
-            <input id="paso3Completado" type="checkbox">
-            <label for="paso3">Paso 3</label>
-            <input id="paso3" type="text" placeholder="Tercer paso">
-        </p>
+    <footer class="footer">
+        <p>Actify - Proyecto de IHC y Tecnologías Móviles</p>
+    </footer>
 
-        <label for="barraProgreso">Progreso</label>
-        <progress id="barraProgreso" value="0" max="3"></progress>
-        <p class="mensaje" id="textoProgreso">0 de 3 microacciones completadas.</p>
-    </form>
-
-    <hr>
-
-    <form id="enfoque" class="bloque">
-        <h2>Sesión de enfoque</h2>
-
-        <label for="duracionEnfoque">Duración en minutos</label>
-        <input id="duracionEnfoque" type="number" min="1" max="60" value="1">
-
-        <p class="temporizador" id="temporizador">01:00</p>
-
-        <p>
-            <button class="boton" id="iniciarEnfoque" type="button">Iniciar</button>
-            <button class="boton boton-claro" id="pausarEnfoque" type="button">Pausar</button>
-            <button class="boton boton-claro" id="finalizarEnfoque" type="button">Finalizar</button>
-        </p>
-
-        <p class="mensaje" id="mensajeEnfoque"></p>
-    </form>
-
-    <hr>
-
-    <form id="progreso" class="bloque">
-        <h2>Tu progreso</h2>
-        <p>Tareas completadas: <strong id="tareasCompletadas">0</strong></p>
-        <p>Microacciones completadas: <strong id="pasosCompletados">0</strong></p>
-        <p>Minutos de enfoque: <strong id="minutosEnfoque">0</strong></p>
-        <p class="mensaje" id="mensajeMotivacion">Cada pequeño avance cuenta.</p>
-    </form>
-
-    <hr>
-
-    <form id="preferencias" class="bloque">
-        <h2>Preferencias de notificaciones</h2>
-
-        <label>
-            <input id="notificacionesActivas" type="checkbox" checked>
-            Activar notificaciones
-        </label>
-
-        <label for="horaNotificacion">Hora de envío</label>
-        <input id="horaNotificacion" type="time" value="18:00">
-
-        <p>Frecuencia</p>
-        <label><input type="radio" name="frecuencia" value="Diaria" checked> Diaria</label>
-        <label><input type="radio" name="frecuencia" value="Semanal"> Semanal</label>
-
-        <p>
-            <button class="boton" id="guardarPreferencias" type="button">Guardar preferencias</button>
-        </p>
-        <p class="mensaje" id="mensajePreferencias"></p>
-    </form>
-
-    <hr>
-
-    <form id="recuperacion" class="bloque">
-        <h2>Recuperar contraseña</h2>
-
-        <label for="correoRecuperacion">Correo electrónico</label>
-        <input id="correoRecuperacion" type="email" placeholder="nombre@correo.com">
-
-        <button class="boton" id="recuperarContrasena" type="button">Enviar instrucciones</button>
-        <p class="mensaje" id="mensajeRecuperacion"></p>
-    </form>
-
-    <hr>
-
-    <h2 id="contacto">Contacto</h2>
-    <p>Escríbenos para conocer más sobre Actify.</p>
-    <p><a href="mailto:actify@correo.com">actify@correo.com</a></p>
-    <p class="texto-pie">Actify - Proyecto de IHC y Tecnologías Móviles</p>
-
-    <script src="js/app.js?v=3"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
