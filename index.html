@@ -43,11 +43,15 @@
             <!-- video grande para la presentacion del producto -->
             <section id="video" class="video-bloque">
                 <h2>Conoce Actify en acción</h2>
-
-                <video class="video-actify" controls>
-                    <source src="video/demo.mp4" type="video/mp4">
-                    tu navegador no puede reproducir este video.
-                </video>
+                <!-- se usa iframe para poner el video desde un link de youtube,
+                si fuera un video mp4 se subiria con "<video>" pero como el video
+                es muy grande, no se puede subir a github, entonces usamos youtube -->
+                <iframe 
+                    class="video-actify"
+                    src="https://www.youtube.com/embed/iY97Lr7fWkI"
+                    title="Video de Actify"
+                    allowfullscreen>
+                </iframe>
             </section>
 
             <h2>Funciones principales</h2>

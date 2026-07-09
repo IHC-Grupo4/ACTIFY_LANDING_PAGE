@@ -130,9 +130,11 @@ de escala */
     color: #087a5a;
 }
 
-/* video grande, ocupa casi todo el bloque */
+/* video de youtube */
 .video-actify {
     width: 100%;
+    height: 520px;
+    border: none;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0,0,0,.15);
 }
@@ -283,5 +285,10 @@ eso pone cuando es un max-width de
 .menu{
     padding: 0px 30px;
     justify-content: center;
+}
+
+/* el video para que sea ajuste a pantallas chicas */
+.video-actify {
+    height: 250px;
 }
 }
